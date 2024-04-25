@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace等于mapper接口类的全限定名,这样实现对应 -->
+<mapper namespace="com.mona.stugl.student.mapper.StudentMapper">
+
+    <update id="updateStudent" parameterType="com.mona.stugl.student.domain.Student">
+        update stu_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">`name`=#{name},</if>
+            <if test="photo != null">`photo`=#{photo},</if>
+        </trim>
+        where  id=#{id}
+    </update>
+    <delete id="deleteStudentById">
+        delete from stu_info where id=#{id}
+    </delete>
+
+    <delete id="deleteStudentByList" >
+        delete from stu_info where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 查询使用 select标签
+            id = 方法名
+            resultType = 返回值类型
+            标签内编写SQL语句
+     -->
+    <select id="selectStuList" resultType="com.mona.stugl.student.domain.Student">
+        <!-- #{empId}代表动态传入的参数,并且进行赋值!后面详细讲解 -->
+        select id,`name`,photo from stu_info;
+    </select>
+
+    <select id="selectStuPage" resultType="com.mona.stugl.student.domain.Student">
+        <!-- #{empId}代表动态传入的参数,并且进行赋值!后面详细讲解 -->
+        select id,`name`,photo from stu_info limit #{pageIndex},#{pageSize};
+    </select>
+
+    <select id="selectStuById" resultType="com.mona.stugl.student.domain.Student">
+        <!-- #{empId}代表动态传入的参数,并且进行赋值!后面详细讲解 -->
+        select id,`name`,photo from stu_info where id=#{id};
+    </select>
+
+    <select id="selectStuByName" resultType="com.mona.stugl.student.domain.Student">
+        <!-- #{empId}代表动态传入的参数,并且进行赋值!后面详细讲解 -->
+        select id,`name`,photo from stu_info where `name`=#{name};
+    </select>
+
+    <insert id="addStudent" parameterType="com.mona.stugl.student.domain.Student">
+        insert into stu_info(id,`name`,photo) values (#{id},#{name},#{photo})
+    </insert>
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace等于mapper接口类的全限定名,这样实现对应 -->
+<mapper namespace="com.mona.stugl.user.mapper.UserMapper">
+
+    <update id="updateUser" parameterType="com.mona.stugl.user.domain.User">
+        update stu_system
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">`name`=#{name},</if>
+            <if test="password != null">`password`=#{password},</if>
+        </trim>
+        where  id=#{id}
+    </update>
+    <delete id="deleteUserById">
+        delete from stu_system where id=#{id}
+    </delete>
+
+    <delete id="deleteUserByList" >
+        delete from stu_system where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectUserPage" resultType="com.mona.stugl.user.domain.User">
+        <!-- #{empId}代表动态传入的参数,并且进行赋值!后面详细讲解 -->
+        select id,`name`,password from stu_system limit #{pageIndex},#{pageSize};
+    </select>
+    <select id="selectUserById" resultType="com.mona.stugl.user.domain.User">
+        <!-- #{empId}代表动态传入的参数,并且进行赋值!后面详细讲解 -->
+        select id,`name`,password from stu_system where id=#{id};
+    </select>
+
+    <select id="selectUserByName" resultType="com.mona.stugl.user.domain.User">
+        <!-- #{empId}代表动态传入的参数,并且进行赋值!后面详细讲解 -->
+        select id,`name`,password from stu_system where `name`=#{name};
+    </select>
+    <!-- 查询使用 select标签
+            id = 方法名
+            resultType = 返回值类型
+            标签内编写SQL语句
+     -->
+    <select id="selectUserList" resultType="com.mona.stugl.user.domain.User">
+        <!-- #{empId}代表动态传入的参数,并且进行赋值!后面详细讲解 -->
+        select id,`name`,password from stu_system
+    </select>
+    <insert id="addUser" parameterType="com.mona.stugl.user.domain.User">
+        insert into stu_system(id,`name`,password) values (#{id},#{name},#{password})
+    </insert>
+
+    <select id="selectuserByIdAndName" resultType="com.mona.stugl.user.domain.User">
+        select id,`name`,password from stu_system where id=#{id} and `name`=#{name};
+    </select>
+</mapper>

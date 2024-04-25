@@ -1,0 +1,14 @@
+get
+http://localhost:8080/selectStu/list
+post
+http://localhost:8080/addStu
+{
+
+        "name":"mona",
+
+
+}
+delete
+http://localhost:8080/deleteStudentById/6
+put
+http://localhost:8080/updateStudent
